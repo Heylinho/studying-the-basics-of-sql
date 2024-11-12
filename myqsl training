@@ -1,0 +1,89 @@
+SQL - Linguagem padrão do banco de dados relacional (Todos os banco de dados que são relacionais trabalham com SQL)
+- A linguagem foi subdividida em DDL, DCL, DML e DTL.
+DDL - Linguagem de Definição de Dados
+Comandos: CREATE, ALTER e DROP
+
+-- criando o banco de dados
+CREATE DATABASE escola;
+
+-- criando a tabela alunos
+CREATE TABLE alunos (
+   Ra 		int		,
+   Nome 	varchar(50)	,
+   Cpf  	varchar(18)	,   
+   Endereco 	varchar(50)	,
+   Bairro 	varchar(50)	,
+   Cidade 	varchar(50)	,
+   Uf 		char(2)		,
+   Cep 		char(8)		,
+   Email 	varchar(50)
+);
+
+-- deletando a tabela alunos (ressalta-se que os dados também 
+-- são excluídos)
+DROP TABLE alunos;
+
+-- criando a tabela alunos
+CREATE TABLE alunos (
+   Ra int primary key auto_increment,
+   Nome varchar(50) not null,
+   Cpf  varchar(18) unique,   
+   Endereco varchar(50)	,
+   Bairro varchar(50),
+   Cidade varchar(50),
+   Uf char(2),
+   Cep char(8),
+   Email varchar(50) unique
+);
+
+=======================================
+-- Alterar a tabela de alunos adicionando à coluna status do aluno.
+alter table alunos add column status varchar(10);
+
+-- Alterar o tamanho do campo endereço de 50 caracteres no máximo para 100 caracteres (cada caractere corresponde à uma letra)
+alter table alunos modify column Endereco varchar(100);
+
+-- alterar a tabela para deletar uma coluna
+alter table alunos add column curso varchar(50);
+alter table alunos drop column curso;
+
+Exercício
+Criar um banco de dados com o nome de empresa.
+
+
+
+create database empresa;
+
+create table alunos (
+	idAluno int primary key auto_increment,
+	nome   varchar(50) not null,
+	cpf       varchar(18) unique,
+	email   varchar(50) unique
+);
+
+create table disciplinas (
+	idDisciplina int primary key auto_increment,
+	nome varchar(50),
+	cargahoraria int,
+	ementa varchar(500)
+);
+
+create table notas (
+	idAluno int,
+	idDisciplina int,
+	media float,
+	situacao varchar(15) check (situacao in ("Aprovado","Reprovado")),
+	primary key (idAluno, idDisciplina),
+            constraint fk_nota_aluno foreign key (idAluno) references ALUNOS (idAluno),
+	constraint fk_nota_disc  foreign key (idDisciplina) references DISCIPLINAS (idDisciplina)
+);
+
+//check é uma validação permitindo gravar apenas Aprovado ou Reprovado, qualquer outro valor que tente gravar, o banco de dados irá recusar
+
+
+//criando o relacionamento entre as tabelas notas e alunos
+//constraint fk_nota_aluno foreign key (idAluno) references ALUNOS (idAluno),
+//constraint fk_nota_aluno  => está atribuindo um nome para à regra
+//foreign key => chave estrangeira
+//(idAluno)    => quem é a chave estrangeira
+//references ALUNOS (idAluno)   => com qual tabela há o relacionamento, lembrando que o idAluno é à chave primária na tabela de alunos
